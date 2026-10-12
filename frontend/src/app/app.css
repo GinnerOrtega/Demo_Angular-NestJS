@@ -1,0 +1,7 @@
+.topbar { display:flex; align-items:center; justify-content:space-between; padding:14px 32px; background:var(--primario); color:#fff; }
+.brand { font-weight:700; font-size:1.15rem; display:flex; align-items:center; gap:10px; }
+.logo { width:32px; height:32px; border-radius:8px; background:#fff; color:var(--primario); display:grid; place-items:center; }
+nav { display:flex; gap:8px; }
+nav a { color:#dbe7ff; text-decoration:none; padding:8px 14px; border-radius:8px; font-weight:600; }
+nav a.active, nav a:hover { background:rgba(255,255,255,.18); color:#fff; }
+.container { max-width:1100px; margin:28px auto; padding:0 16px; }

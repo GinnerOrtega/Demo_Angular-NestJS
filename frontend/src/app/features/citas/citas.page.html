@@ -1,0 +1,56 @@
+<h1>Citas médicas</h1>
+<p class="subtitulo">Agendamiento de citas - Piedrazul</p>
+
+@if (error()) { <div class="alerta error">{{ error() }}</div> }
+@if (exito()) { <div class="alerta ok">{{ exito() }}</div> }
+
+<div class="grid">
+  <form class="card" [formGroup]="form" (ngSubmit)="guardar()">
+    <h2>{{ editandoId() ? 'Editar cita #' + editandoId() : 'Nueva cita' }}</h2>
+    <label for="paciente">Paciente</label>
+    <input id="paciente" formControlName="paciente" placeholder="Nombre completo" />
+    <label for="documento">Documento</label>
+    <input id="documento" formControlName="documento" placeholder="Solo números" />
+    <div class="fila">
+      <div><label for="fecha">Fecha</label><input id="fecha" type="date" formControlName="fecha" /></div>
+      <div><label for="hora">Hora</label><input id="hora" type="time" formControlName="hora" /></div>
+    </div>
+    <label for="medico">Médico</label>
+    <select id="medico" formControlName="medicoId">
+      <option [value]="0" disabled>Seleccione un médico</option>
+      @for (m of medicosActivos(); track m.id) {
+        <option [value]="m.id">{{ m.nombre }} — {{ m.especialidad }}</option>
+      }
+    </select>
+    <label for="motivo">Motivo (opcional)</label>
+    <input id="motivo" formControlName="motivo" placeholder="Ej: Control" />
+    <div class="acciones">
+      <button class="btn-primario" type="submit">{{ editandoId() ? 'Actualizar' : 'Agendar' }}</button>
+      @if (editandoId()) { <button class="btn-secundario" type="button" (click)="cancelar()">Cancelar</button> }
+    </div>
+  </form>
+
+  <div class="card">
+    <h2>Citas agendadas ({{ citas().length }})</h2>
+    <table>
+      <thead><tr><th>Fecha</th><th>Hora</th><th>Paciente</th><th>Médico</th><th>Motivo</th><th></th></tr></thead>
+      <tbody>
+        @for (c of citas(); track c.id) {
+          <tr>
+            <td>{{ c.fecha }}</td>
+            <td>{{ c.hora }}</td>
+            <td>{{ c.paciente }}<br /><small>{{ c.documento }}</small></td>
+            <td>{{ c.medico.nombre }}<br /><small>{{ c.medico.especialidad }}</small></td>
+            <td>{{ c.motivo || '—' }}</td>
+            <td class="opciones">
+              <button class="btn-secundario btn-sm" (click)="editar(c)">Editar</button>
+              <button class="btn-peligro btn-sm" (click)="eliminar(c)">Eliminar</button>
+            </td>
+          </tr>
+        } @empty {
+          <tr><td colspan="6" class="vacio">No hay citas agendadas</td></tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</div>
